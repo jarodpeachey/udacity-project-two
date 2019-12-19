@@ -1,57 +1,49 @@
-/**
- * 
- * Manipulating the DOM exercise.
- * Exercise programmatically builds navigation,
- * scrolls to anchors from navigation,
- * and highlights section in viewport upon scrolling.
- * 
- * Dependencies: None
- * 
- * JS Version: ES2015/ES6
- * 
- * JS Standard: ESlint
- * 
-*/
+// const navbar = document.getElementById('navbar');
+const navbarList = document.getElementById('navbar__menu');
+const navbarTitle = document.createElement('h1');
+navbarTitle.textContent = "Site Logo";
+navbarTitle.classList.add('navbar__title');
+navbarList.insertAdjacentElement("beforebegin", navbarTitle);
 
-/**
- * Define Global Variables
- * 
-*/
+let navbarIndex = 1;
 
+const createNavbarItem = (text) => {
+  const navbarItem = document.createElement('li');
+  navbarItem.classList.add('navbar__item');
+  navbarItem.classList.add(`navbar__item-${navbarIndex}`);
+  const navbarText = document.createElement('a');
+  navbarText.textContent = text;
+  navbarText.classList.add('navbar__link');
 
-/**
- * End Global Variables
- * Start Helper Functions
- * 
-*/
+  navbarItem.appendChild(navbarText);
+  navbarList.append(navbarItem)
 
+  navbarIndex++;
+}
 
+const createActiveIndicator = () => {
+  const navbarItem = document.createElement('li');
+  navbarItem.classList.add('navbar__item--active');
+  navbarItem.textContent = "";
+  navbarList.append(navbarItem);
 
-/**
- * End Helper Functions
- * Begin Main Functions
- * 
-*/
+  return navbarItem;
+}
 
-// build the nav
+const updateActiveItem = (element) => {
+  console.log(activeIndicator);
 
+  activeIndicator.style.width = `${element.clientWidth}px`;
+  activeIndicator.style.left = `${element.offsetLeft}px`;
+}
 
-// Add class 'active' to section when near top of viewport
+createNavbarItem('One');
+createNavbarItem('Two');
+createNavbarItem('Three');
+const activeIndicator = createActiveIndicator();
 
-
-// Scroll to anchor ID using scrollTO event
-
-
-/**
- * End Main Functions
- * Begin Events
- * 
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
-
-
+document.body.addEventListener('click', event => {
+  if (event.target.classList.contains('navbar__link')) {
+    updateActiveItem(event.target);
+  }
+});
