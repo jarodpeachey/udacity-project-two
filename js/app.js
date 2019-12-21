@@ -23,14 +23,18 @@ const sections = [
 // Create navbar title
 const createNavbarTitle = (text) => {
   const navbarTitle = document.createElement('h1');
-  navbarTitle.textContent = text;
   navbarTitle.classList.add('navbar__title');
-  navbarList.insertAdjacentElement('beforebegin', navbarTitle);
+  const navbarText = document.createElement('a');
+  navbarText.textContent = text;
+  navbarText.href = `#page__header`;
+  navbarText.classList.add('navbar__link');
+
+  navbarTitle.appendChild(navbarText);
+  navbarList.append(navbarTitle);
 };
 
-// Create navbar items
-let navbarIndex = 1;
 
+// Create sections
 const createSection = (section) => {
   // Create elements
   const newSection = document.createElement('section');
@@ -50,63 +54,88 @@ const createSection = (section) => {
   newContainer.append(newTitle, newContent);
   newSection.appendChild(newContainer);
 
+  // Append element to main content
   mainContent.appendChild(newSection);
 };
 
+// Create navbar items
 const createNavbarItem = (section) => {
+  // Create elements
   const navbarItem = document.createElement('li');
+  const navbarText = document.createElement('a');
+
+  // Assign element classnames and attributes
   navbarItem.classList.add('navbar__item');
   navbarItem.classList.add(`navbar__item-${section.number}`);
-  const navbarText = document.createElement('a');
+  navbarText.classList.add('navbar__link');
   navbarText.textContent = section.title;
   navbarText.href = `#section-${section.number}`;
-  navbarText.classList.add('navbar__link');
 
+  // Append
   navbarItem.appendChild(navbarText);
   navbarList.append(navbarItem);
-
-  navbarIndex++;
 };
 
 const createActiveIndicator = () => {
+  // Create elements
   const activeIndicator = document.createElement('li');
+  // Assign attributes
   activeIndicator.classList.add('navbar__indicator');
   activeIndicator.textContent = '';
+
+  // Append the indicator
   navbarList.append(activeIndicator);
 
+  // Set position of active indicator
   const activeItem = document.querySelector('.navbar__item--active');
+  const navbarTitle = document.querySelector('.navbar__title');
 
   if (!activeItem) {
-    activeIndicator.style.opacity = 0;
+    activeIndicator.style.left = `${navbarTitle.offsetLeft}px`;
+    activeIndicator.style.width = `${navbarTitle.clientWidth}px`;
   } else {
-    activeIndicator.style = `opacity: 1; width: ${activeItem.clientWidth}px; left: ${activeItem.clientLeft}px`;
+    activeIndicator.style.width = `${activeItem.clientWidth}px`;
+    activeIndicator.style.left = `${activeItem.offsetLeft}px`;
   }
 
   return activeIndicator;
 };
 
+// Update active item indicator position and width
 const updateActiveItem = () => {
+  // Main elements
   const activeItem = document.querySelector('.navbar__item--active');
+  const navbarTitle = document.querySelector('.navbar__title');
 
+  // If active navbar item, set width and position equal to that; otherwise, set equal to the Home text width and position
   if (activeItem) {
-    activeIndicator.style.opacity = 1;
     activeIndicator.style.width = `${activeItem.clientWidth}px`;
     activeIndicator.style.left = `${activeItem.offsetLeft}px`;
   } else {
-    activeIndicator.style.opacity = 0;
+    activeIndicator.style.left = `${navbarTitle.offsetLeft}px`;
+    activeIndicator.style.width = `${navbarTitle.clientWidth}px`;
   }
 };
 
+// Onscroll function
 const onScroll = () => {
-  const navLinks = document.querySelectorAll('a.navbar__link');
+  // NavLinks array
+  const navLinks = document.querySelectorAll('li a.navbar__link');
+
+  // Current position
   const currentPosition = window.scrollY + 20;
 
+  // Hero content
   const hero = document.querySelector('.hero__content');
 
-  hero.style = `margin-top: ${window.scrollY *
-    1}px; opacity: ${window.scrollY > 200 ? (hero.clientHeight - window.scrollY + 200) /
-    hero.clientHeight : 1}`;
+  // Control hero opacity when scrolled down
+  hero.style = `margin-top: ${window.scrollY * 1}px; opacity: ${
+    window.scrollY > 200
+      ? (hero.clientHeight - window.scrollY + 200) / hero.clientHeight
+      : 1
+  }`;
 
+  // Check if we are at one of the sections, and update the active item indicator
   for (let i = 0; i < navLinks.length; i++) {
     const section = document.querySelector(navLinks[i].hash);
 
@@ -120,11 +149,15 @@ const onScroll = () => {
     }
   }
 
+  // Call update function
   updateActiveItem();
 };
 
 //////// Element creation ////////
+// Create navbar title
+createNavbarTitle('Home');
 
+// Create section and navbar item from each sections array item
 sections.forEach((section, index) => {
   section.number = index + 1;
   section.title = `Section ${section.number}`;
@@ -132,9 +165,8 @@ sections.forEach((section, index) => {
   createNavbarItem(section);
 });
 
-createNavbarTitle('Home');
+// Create active indicator
 const activeIndicator = createActiveIndicator();
 
 //////// Event listeners ////////
-
 window.addEventListener('scroll', onScroll);

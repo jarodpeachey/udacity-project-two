@@ -129,8 +129,7 @@ section {
 }
 
 section#section-1 {
-  padding-top: 0;
-  margin-top: 4em;
+  /* margin-top: 4em; */
 }
 
 /* Header Styles */
@@ -156,6 +155,7 @@ section#section-1 {
 .navbar__title {
   margin: 0;
   font-size: 24px;
+  margin-right: auto;
 }
 
 .navbar__menu {
@@ -164,6 +164,7 @@ section#section-1 {
   text-align: right;
   list-style: none;
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -172,7 +173,6 @@ section#section-1 {
 
 .navbar__indicator {
   transition: all 0.22s ease-in-out, left 0.22s ease-in-out;
-
   background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.3769470404984424) 0%,
@@ -183,6 +183,7 @@ section#section-1 {
   display: block;
   position: absolute;
   border-radius: 50px;
+  z-index: -1;
 }
 
 .navbar__item {
@@ -206,9 +207,9 @@ section#section-1 {
 /* Footer Styles */
 .page__footer {
   background: linear-gradient(
-    90deg,
+    180deg,
     rgb(107, 33, 190) 0%,
-    rgb(221, 25, 74) 100%
+    rgb(15, 207, 221) 100%
   );
   height: 100px;
   position: relative;
@@ -247,6 +248,7 @@ section#section-1 {
 /* Landing Container Styles */
 .section__content {
   padding: 0;
+  margin: 0;
 }
 
 @media only screen and (min-width: 35em) {
