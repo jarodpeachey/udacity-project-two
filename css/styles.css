@@ -251,13 +251,6 @@ section#section-1 {
   margin: 0;
 }
 
-@media only screen and (min-width: 35em) {
-  .section__content {
-    max-width: 50em;
-    padding: 0;
-  }
-}
-
 section:nth-of-type(even) {
   margin-right: 0;
   margin-left: auto;
