@@ -34,29 +34,29 @@ let navbarIndex = 1;
 const createSection = (section) => {
   // Create elements
   const newSection = document.createElement('section');
+  const newContainer = document.createElement('div');
   const newTitle = document.createElement('h2');
   const newContent = document.createElement('p');
 
   // Assign classnames and ids
   newSection.id = `section-${section.number}`;
+  newContainer.classList.add('container');
   newTitle.classList.add('section__title');
   newContent.classList.add('section__content');
 
   // Build element
   newContent.innerText = section.content;
   newTitle.innerText = section.title;
-  newSection.append(newTitle, newContent);
+  newContainer.append(newTitle, newContent);
+  newSection.appendChild(newContainer);
 
   mainContent.appendChild(newSection);
-}
+};
 
 const createNavbarItem = (section) => {
   const navbarItem = document.createElement('li');
   navbarItem.classList.add('navbar__item');
   navbarItem.classList.add(`navbar__item-${section.number}`);
-  if (section.number === 1) {
-    navbarItem.classList.add('navbar__item--active');
-  }
   const navbarText = document.createElement('a');
   navbarText.textContent = section.title;
   navbarText.href = `#section-${section.number}`;
@@ -76,8 +76,11 @@ const createActiveIndicator = () => {
 
   const activeItem = document.querySelector('.navbar__item--active');
 
-  activeIndicator.style.width = `${activeItem.clientWidth}px`;
-  activeIndicator.style.left = `${activeItem.offsetLeft}px`;
+  if (!activeItem) {
+    activeIndicator.style.opacity = 0;
+  } else {
+    activeIndicator.style = `opacity: 1; width: ${activeItem.clientWidth}px; left: ${activeItem.clientLeft}px`;
+  }
 
   return activeIndicator;
 };
@@ -85,13 +88,24 @@ const createActiveIndicator = () => {
 const updateActiveItem = () => {
   const activeItem = document.querySelector('.navbar__item--active');
 
-  activeIndicator.style.width = `${activeItem.clientWidth}px`;
-  activeIndicator.style.left = `${activeItem.offsetLeft}px`;
+  if (activeItem) {
+    activeIndicator.style.opacity = 1;
+    activeIndicator.style.width = `${activeItem.clientWidth}px`;
+    activeIndicator.style.left = `${activeItem.offsetLeft}px`;
+  } else {
+    activeIndicator.style.opacity = 0;
+  }
 };
 
 const onScroll = () => {
   const navLinks = document.querySelectorAll('a.navbar__link');
   const currentPosition = window.scrollY + 20;
+
+  const hero = document.querySelector('.hero__content');
+
+  hero.style = `margin-top: ${window.scrollY *
+    1}px; opacity: ${window.scrollY > 200 ? (hero.clientHeight - window.scrollY + 200) /
+    hero.clientHeight : 1}`;
 
   for (let i = 0; i < navLinks.length; i++) {
     const section = document.querySelector(navLinks[i].hash);
@@ -101,11 +115,12 @@ const onScroll = () => {
       section.offsetTop + section.offsetHeight > currentPosition
     ) {
       navLinks[i].parentElement.classList.add('navbar__item--active');
-      updateActiveItem();
     } else {
       navLinks[i].parentElement.classList.remove('navbar__item--active');
     }
   }
+
+  updateActiveItem();
 };
 
 //////// Element creation ////////
@@ -115,7 +130,7 @@ sections.forEach((section, index) => {
   section.title = `Section ${section.number}`;
   createSection(section);
   createNavbarItem(section);
-})
+});
 
 createNavbarTitle('Home');
 const activeIndicator = createActiveIndicator();
