@@ -206,11 +206,7 @@ section#section-1 {
 
 /* Footer Styles */
 .page__footer {
-  background: linear-gradient(
-    180deg,
-    rgb(107, 33, 190) 0%,
-    rgb(15, 207, 221) 100%
-  );
+  background: rgba(255, 255, 255, 0.295);
   height: 100px;
   position: relative;
   z-index: 1;
